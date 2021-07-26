@@ -57,33 +57,33 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     objects = UserManager()
 
-    def get_absolute_url(self):
+    def get_absolute_url(self): # go to profile
         return "/users/%i/" % (self.pk)
     def get_email(self):
         return self.email
 
 class user_type(models.Model):
-    is_teach = models.BooleanField(default=False)
-    is_student = models.BooleanField(default=False)
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    is_seller = models.BooleanField(default=False)
+    is_buyer = models.BooleanField(default=False)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='user_type_custom')
 
     def __str__(self):
-        if self.is_student == True:
-            return User.get_email(self.user) + " - is_student"
+        if self.is_buyer == True:
+            return User.get_email(self.user) + " - is_buyer"
         else:
-            return User.get_email(self.user) + " - is_teacher"
+            return User.get_email(self.user) + " - is_seller"
 
 class Art(models.Model):
   auctionimage = models.ImageField(upload_to='auctionimage/', null=False)
   title = models.CharField(max_length=200)
   description = models.TextField()
-  reservedPrice = models.IntegerField(default=0)
+  reservedPrice = models.IntegerField(default=0) # this will be updated constantly
   buyingPrice = models.IntegerField(default=0)
   owner = models.ForeignKey(User, on_delete=models.CASCADE)
   typeCategory = models.CharField(choices=Typecater, default='Portrait', null=True, max_length=50)
-  startTime = models.DateTimeField()
-  EndTime = models.DateTimeField()
-  createdTime = models.DateTimeField(auto_now_add=True)
+  startTime = models.DateTimeField(auto_now_add=False, auto_now=False, blank=True)
+  EndTime =  models.DateTimeField(auto_now_add=False, auto_now=False, blank=True)
+  createdTime =  models.DateTimeField(auto_now_add=True, auto_now=False, blank=True)
 
   def __str__(self):
     return self.title
@@ -96,14 +96,15 @@ class Payment(models.Model):
     return self.paymentType
 
 class Profile(models.Model):
+  nickname = models.CharField(max_length=200, null=True, blank=True)
   username = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
   profilePic = models.ImageField(upload_to='userProfile/', default='userProfile/test.png')
   phone = models.IntegerField(null=True, blank=True)
   address = models.TextField()
-  payment = models.ForeignKey(Payment, on_delete=models.CASCADE())
+  payment = models.ForeignKey(Payment, on_delete=models.CASCADE, null=True, blank=True)
 
   def __str__(self):
-    return self.username
+    return str(self.username)
 
   @receiver(post_save, sender=User)
   def create_user_profile(sender, instance, created, **kwargs):
