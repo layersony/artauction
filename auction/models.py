@@ -13,6 +13,11 @@ Paymenttype = (
   ('M-pesa', 'M-pesa'),
   ('Bank', 'Bank')
 )
+Status = (
+  ('inprogress','In-Progress'),
+  ('futureselling','Future Selling'),
+  ('sold', 'Sold')
+)
 
 class UserManager(BaseUserManager):
 
@@ -74,19 +79,26 @@ class user_type(models.Model):
             return User.get_email(self.user) + " - is_seller"
 
 class Art(models.Model):
-  auctionimage = models.ImageField(upload_to='auctionimage/', null=False)
-  title = models.CharField(max_length=200)
-  description = models.TextField()
-  reservedPrice = models.IntegerField(default=0) # this will be updated constantly
-  buyingPrice = models.IntegerField(default=0)
+  auctionimage = models.ImageField('Auction Image',upload_to='auctionimage/', null=False)
+  title = models.CharField('Art Title',max_length=200)
+  description = models.TextField('Art Inspiration')
+  reservedPrice = models.IntegerField('Reserved Price (Ksh)',default=0) # this will be updated constantly
+  buyingPrice = models.IntegerField('Buying Price (Ksh)', default=0)
   owner = models.ForeignKey(User, on_delete=models.CASCADE)
-  typeCategory = models.CharField(choices=Typecater, default='Portrait', null=True, max_length=50)
-  startTime = models.DateTimeField(auto_now_add=False, auto_now=False, blank=True)
-  EndTime =  models.DateTimeField(auto_now_add=False, auto_now=False, blank=True)
+  typeCategory = models.CharField('Art Orienation', choices=Typecater, default='Portrait', null=True, max_length=50)
+  startTime = models.DateTimeField('Auction StartTime', auto_now_add=False, auto_now=False, blank=True)
+  EndTime =  models.DateTimeField('Auction EndTime', auto_now_add=False, auto_now=False, blank=True)
   createdTime =  models.DateTimeField(auto_now_add=True, auto_now=False, blank=True)
+  status = models.CharField('Status', choices=Status, default='futureselling', null=True, max_length=50)
 
   def __str__(self):
     return self.title
+
+  @classmethod
+  def get_by_status(cls, reqUser, statusCode):
+    allarts = cls.objects.filter(owner=reqUser)
+    variousCodes = [arts for arts in allarts if arts.status == statusCode]
+    return variousCodes
 
 class Payment(models.Model):
   paymentType = models.CharField(max_length=200, choices=Paymenttype, default='M-pesa', null=True)
