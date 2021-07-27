@@ -10,11 +10,13 @@ urlpatterns = [
   path('logout/', views.logout_user, name='logout'),
   path('buyer/index', views.buyerProfile, name='buyerProfile'),
   path('seller/index', views.sellerProfile, name='sellerProfile'),
+  path('seller/addart/', views.addart, name='addart'),
   path('seller/updateart/<str:id>', views.updateArt, name='updateArt'),
   path('seller/delete/<str:id>', views.deleteArt, name='deleteArt'),
   path('artdetails/<str:id>', views.artdetails, name='artdetails'),
   path('bidding/<str:id>', views.biddingArea, name='bidding'),
-  path('ajax/biddingprice/', views.ajaxbidprice, name='ajaxbidprice')
+  path('ajax/biddingprice/', views.ajaxbidprice, name='ajaxbidprice'),
+  path('ajax/interested/', views.interested, name='interested')
 ]
 if settings.DEBUG:
   urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

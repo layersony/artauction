@@ -9,11 +9,9 @@
 {% for art in inprogress %}
   <div>
     <p>{{ art.title }}</p>
-    <a href="{% url 'artdetails' art.id %}">More Info</a>
-    <a href="{% url 'bidding' art.id %}"><button class="btn btn-primary">Start Bidding</button></a>
+    <a href="{% url 'artdetails' art.id %}">More Info</a><br>
+    <a href="{% url 'bidding' art.id %}"><button class="btn btn-primary btn-sm">Start Bidding</button></a>
   </div>
-
-
 {% empty %}
 <p class="alert alert-info">No <strong>In-Progress</strong> Art Available in Database</p>
 {% endfor %}

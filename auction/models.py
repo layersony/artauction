@@ -18,6 +18,10 @@ Status = (
   ('futureselling','Future Selling'),
   ('sold', 'Sold')
 )
+BuyerCheck = (
+  ('bought','bought'),
+  ('interested','interested')
+)
 
 class UserManager(BaseUserManager):
 
@@ -135,10 +139,20 @@ class Profile(models.Model):
   def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
 
-class Bid(models.Model):
+# class Bid(models.Model):
+#   art = models.ForeignKey(Art, on_delete=models.CASCADE)
+#   buyer = models.ForeignKey(Profile, on_delete=models.CASCADE)
+#   bidprice = models.IntegerField(default=0)
+
+#   def __str__(self):
+#     return f'{self.buyer} bidded on {self.art}'
+
+class Interested(models.Model):
   art = models.ForeignKey(Art, on_delete=models.CASCADE)
   buyer = models.ForeignKey(Profile, on_delete=models.CASCADE)
+  buyercheck = models.CharField(max_length=100, choices=BuyerCheck, null=True, blank=True)
   bidprice = models.IntegerField(default=0)
 
+
   def __str__(self):
-    return f'{self.buyer} bidded on {self.art}'
+    return f'{self.buyer} is Insterested in {self.art}'

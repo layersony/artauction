@@ -17,17 +17,61 @@
         <p>Reserved Price: {{ art.reservedPrice }}</p>
         <p>Buying Price: {{ art.buyingPrice }}</p>
         <p>Category: {{ art.typeCategory }}</p>
-        <p>Start Time: {{ art.startTime }}</p>
-        <p>End Time: {{ art.EndTime }}</p>
-        <p>Status: {{ art.status }}</p>
+        <p>Start Time: <span class="startingtime">{{ art.startTime }}</span></p>
+        <p>End Time: <span class="endingtime">{{ art.EndTime }}</span></p>
+        <p>Status: {{ art.status|capfirst }}</p>
         <p>Seller: {{ art.owner.profile.nickname }}</p>
 
         <div class="d-flex justify-content-between align-items-center">
-          <button class="btn btn-primary">Add to WatchList</button>
-          <button class="btn btn-primary">Start Bidding</button>
+
+          <form method="post" id='interestedForm'>
+            {% csrf_token %}
+            <input type="hidden" name="interested" value='interested'>
+            <input type="hidden" name="artid" value="{{art.id}}">
+            {% if likedArt %}
+            <button type='submit' id='liked' class="btn btn-outline-success btn-sm">Added</button>
+            {% else %}
+            <button type='submit' id='liked' class="btn btn-outline-secondary btn-sm">Add to Interest</button>
+            {% endif %}
+          </form>
+
         </div>
+
       </div>
     </div>
   </div>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+
+  $('#interestedForm').submit(function(event){
+    event.preventDefault()
+    let price = parseInt($('#biddingPrice').val());
+
+    form = $('#interestedForm')
+    likebtn = $('#liked')
+
+    $.ajax({
+      'url':'{% url "interested" %}',
+      'type':'POST',
+      'data':form.serialize(),
+      'dataType':'json',
+      'success': function(data){
+        console.log(data)
+        if(data['addedsuccessful'] == 1){
+          likebtn.removeClass('btn-outline-secondary btn-sm')
+          likebtn.addClass('btn-outline-success btn-sm')
+          likebtn.text('Added')
+          // alert(data['success'])
+        }else{
+          likebtn.removeClass('btn-outline-success btn-sm')
+          likebtn.addClass('btn-outline-secondary btn-sm')
+          likebtn.text('Add to Interest')
+          // alert('Removed from your Interest Collection')
+        }
+      }
+    })
+  })
+
+</script>
 {% endblock %}

@@ -5,7 +5,6 @@
 
 
 <div class="container">
-  <a href="{% url 'home' %}"><button class="btn btn-info mt-4">Go Back</button></a>
   <div class="row">
     <div class="col-md-6 mb-4 mt-4 d-flex bg-danger justify-content-center align-items-center">
       <img src="{{ art.auctionimage.url }}" alt="{{ art.title }}" class="img-fluid">
@@ -33,27 +32,30 @@
       </div>
       <div class="artindexdetails  p-4">
         <p>Category: {{ art.typeCategory }}</p>
-        <p>Start Time: {{ art.startTime }}</p>
-        <p>End Time: {{ art.EndTime }}</p>
-        <p>Status: {{ art.status }}</p>
+        <p>Start Time: <span id="startingtime">{{ art.startTime }}</span></p>
+        <p>End Time: <span id="endingtime">{{ art.EndTime }}</span></p>
+        <p>Status: {{ art.status|capfirst }}</p>
       </div>
     </div>
   </div>
 
   <div class="bidderslist p-2">
     <h3 class='text-center'>List of Bidders</h3>
-    <ul style='list-style-type:none;'>
+    <ol id='bidlist'>
+      {% for participant in allparticipants %}
       <li class="bg-secondary p-2">
-        <div class="d-flex justify-content-around align-items-center">
-          <p>Maingi</p>
-          <p>Bid Price: 1293 Ksh</p>
+        <div class="d-flex justify-content-between align-items-center">
+          <p>{{participant.buyer.nickname}}</p>
+          <p>{{participant.bidprice}}</p>
         </div>
       </li>
-    </ul>
+      {% endfor %}
+    </ol>
   </div>
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 <script>
 
   $('#biddingform').submit(function(event){
@@ -71,10 +73,33 @@
         'dataType':'json',
         'success': function(data){
           $('.bddprice').text(data['price'])
+          buildlist(data['allparticipants'])
+          console.log($('#startingtime').text())
         }
       })
+      function buildlist(data){
+        theul = $('#bidlist')
+        for (let i = 0; i < data.length; i++){
+          let entry = `
+            <li class="bg-secondary p-2">
+              <div class="d-flex justify-content-between align-items-center">
+                <p>${data[i][0]}</p>
+                <p>${data[i][1]}</p>
+              </div>
+            </li>`
+          theul.prepend(entry)
+        }
+      }
     }
   })
 
+  $(document).ready(function(){
+    starttime = document.getElementById('startingtime')
+    endtime = document.getElementById('endingtime')
+
+    console.log(starttime.textContent)
+    console.log(moment(starttime.textContent).format('MM/DD/YYYY'));
+  });
+  
 </script>
 {% endblock %}

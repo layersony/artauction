@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from .models import User, user_type, Art, Payment, Profile
+from .models import User, user_type, Art, Payment, Profile, Interested
 
 
 class UserAdmin(BaseUserAdmin):
@@ -30,9 +30,10 @@ class UserAdmin(BaseUserAdmin):
     ordering = ('email',)
     filter_horizontal = ('groups', 'user_permissions',)
 
-
 admin.site.register(User, UserAdmin)
 admin.site.register(Art)
 admin.site.register(Payment)
 admin.site.register(Profile)
 admin.site.register(user_type)
+# admin.site.register(Bid)
+admin.site.register(Interested)
