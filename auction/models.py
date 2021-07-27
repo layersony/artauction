@@ -100,6 +100,14 @@ class Art(models.Model):
     variousCodes = [arts for arts in allarts if arts.status == statusCode]
     return variousCodes
 
+  @classmethod
+  def get_all_by_status(cls, statusCode):
+    return cls.objects.filter(status=statusCode)
+
+  @classmethod
+  def update_price(cls, id, price):
+    cls.objects.filter(id=id).update(reservedPrice=price)
+
 class Payment(models.Model):
   paymentType = models.CharField(max_length=200, choices=Paymenttype, default='M-pesa', null=True)
   accountNumber = models.IntegerField()
@@ -126,3 +134,11 @@ class Profile(models.Model):
   @receiver(post_save, sender=User)
   def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
+
+class Bid(models.Model):
+  art = models.ForeignKey(Art, on_delete=models.CASCADE)
+  buyer = models.ForeignKey(Profile, on_delete=models.CASCADE)
+  bidprice = models.IntegerField(default=0)
+
+  def __str__(self):
+    return f'{self.buyer} bidded on {self.art}'

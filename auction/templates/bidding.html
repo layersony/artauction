@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+
+{% block content %}
+
+
+<div class="container">
+  <a href="{% url 'home' %}"><button class="btn btn-info mt-4">Go Back</button></a>
+  <div class="row">
+    <div class="col-md-6 mb-4 mt-4 d-flex bg-danger justify-content-center align-items-center">
+      <img src="{{ art.auctionimage.url }}" alt="{{ art.title }}" class="img-fluid">
+    </div>
+    <div class="col-md-6 mb-4 mt-4">
+      <div class="container">
+        <h3>Bidding on {{art.title}}</h3>
+        <div class="d-flex justify-content-between align-items-center">
+          <p>Bidding Price: <span class="bddprice">{{ art.reservedPrice }}</span> Ksh</p>
+          <p>Buying Price: {{ art.buyingPrice }} Ksh</p>
+          <p>Time Remaining: 40mins</p>
+        </div>
+        <p>Seller: {{ art.owner.profile.nickname }}</p>
+      </div>
+
+      <div class="container">
+        <form id="biddingform">
+          {% csrf_token %}
+          <input type="number" name="biddingPrice" id="biddingPrice" minlength='{{ inputlen }}'>
+          <input type="hidden" name="artid" value="{{art.id}}">
+          <button class="btn btn-primary btn-sm" type="submit">Bid</button><br>
+          <small class='text-danger' id="warning"></small>
+        </form>
+        <small>Bid Price be higher than: <span class="text-danger bddprice">{{ art.reservedPrice }}</span> </small>
+      </div>
+      <div class="artindexdetails  p-4">
+        <p>Category: {{ art.typeCategory }}</p>
+        <p>Start Time: {{ art.startTime }}</p>
+        <p>End Time: {{ art.EndTime }}</p>
+        <p>Status: {{ art.status }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="bidderslist p-2">
+    <h3 class='text-center'>List of Bidders</h3>
+    <ul style='list-style-type:none;'>
+      <li class="bg-secondary p-2">
+        <div class="d-flex justify-content-around align-items-center">
+          <p>Maingi</p>
+          <p>Bid Price: 1293 Ksh</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+
+  $('#biddingform').submit(function(event){
+    event.preventDefault()
+    let price = parseInt($('#biddingPrice').val());
+    if (price <= parseInt('{{ art.reservedPrice }}')){
+      $('#warning').text('Price is Equal or less than the Reserved Price')
+    }else{
+      $('#warning').text('.')
+      form = $('#biddingform')
+      $.ajax({
+        'url':'{% url "ajaxbidprice" %}',
+        'type':'POST',
+        'data':form.serialize(),
+        'dataType':'json',
+        'success': function(data){
+          $('.bddprice').text(data['price'])
+        }
+      })
+    }
+  })
+
+</script>
+{% endblock %}

@@ -1,1 +1,42 @@
-<h1>This is Index landing page {{request.user}}</h1>
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+
+{% block content %}
+
+<h1>Home</h1>
+
+<h2>In Progress</h2>
+{% for art in inprogress %}
+  <div>
+    <p>{{ art.title }}</p>
+    <a href="{% url 'artdetails' art.id %}">More Info</a>
+    <a href="{% url 'bidding' art.id %}"><button class="btn btn-primary">Start Bidding</button></a>
+  </div>
+
+
+{% empty %}
+<p class="alert alert-info">No <strong>In-Progress</strong> Art Available in Database</p>
+{% endfor %}
+
+<h2>Future Selling</h2>
+{% for art in future %}
+  <div>
+    <p>{{ art.title }}</p>
+    <a href="{% url 'artdetails' art.id %}">More Info</a>
+  </div>
+{% empty %}
+<p class="alert alert-info">No <strong>Future</strong> Art Available in Database</p>
+{% endfor %}
+
+<h2>Sold</h2>
+{% for art in sold %}
+  <div>
+    <p>{{ art.title }}</p>
+    <a href="{% url 'artdetails' art.id %}">More Info</a>
+  </div>
+
+{% empty %}
+<p class="alert alert-info">No <strong>Sold</strong> Art Available in Database</p>
+{% endfor %}
+
+{% endblock %}
