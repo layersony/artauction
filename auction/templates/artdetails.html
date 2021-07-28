@@ -15,13 +15,15 @@
         {% if art.status == 'sold' %}
         <h2 class='text-success'>Sold to {{ winner.buyer.nickname }}</h2>
         {% endif %}
+        <small style='display:none;' id='theArtId'>{{ art.id }}</small>
+        <small id="timewritingind"></small> <small id="timestatusind"></small>
         <h3>Art Details {{art.title}}</h3>
         <p>Description: {{ art.description }}</p>
         <p>Reserved Price: {{ art.reservedPrice }}</p>
         <p>Buying Price: {{ art.buyingPrice }}</p>
         <p>Category: {{ art.typeCategory }}</p>
-        <p>Start Time: <span class="startingtime">{{ art.startTime }}</span></p>
-        <p>End Time: <span class="endingtime">{{ art.EndTime }}</span></p>
+        <p>Start Time: <span id="startingtimeind">{{ art.startTime }}</span></p>
+        <p>End Time: <span id="endingtimeind">{{ art.EndTime }}</span></p>
         <p>Status: {{ art.status|capfirst }}</p>
         <p>Seller: {{ art.owner.profile.nickname }}</p>
 

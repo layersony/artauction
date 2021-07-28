@@ -6,35 +6,79 @@
 <h1>Home</h1>
 
 <h2>In Progress</h2>
-{% for art in inprogress %}
-  <div>
-    <p>{{ art.title }}</p>
-    <a href="{% url 'artdetails' art.id %}">More Info</a><br>
-    <a href="{% url 'bidding' art.id %}"><button class="btn btn-primary btn-sm">Start Bidding</button></a>
+<div class="row">
+  {% for art in inprogress %}
+  <div class='col-md-4 mt-2 mb-2 p-2'>
+    <div class="artinddet p-2 bg-warning m-2">
+      <img src="{{ art.auctionimage.url }}" alt="" class="img-fluid">
+      <small id="timewriting"></small><small id="timestatus"></small><br>
+      <h4>{{ art.title|capfirst }}</h4>
+      
+      <div class="d-flex justify-content-between align-content-center">
+        <p>Orientation: {{ art.typeCategory }}</p>
+        <p>Status: <span class="statusind">{{ art.status|capfirst }}</span></p>
+      </div>
+      <small>Owner: {{ art.owner.profile.nickname }}</small><br>
+      <a href="{% url 'artdetails' art.id %}">More Info</a><br>
+      <a href="{% url 'bidding' art.id %}"><button class="btn btn-primary btn-sm">Start Bidding</button></a>
+    </div>
   </div>
-{% empty %}
-<p class="alert alert-info">No <strong>In-Progress</strong> Art Available in Database</p>
-{% endfor %}
+  {% empty %}
+  <p class="alert alert-info">No <strong>In-Progress</strong> Art Available in Database</p>
+  {% endfor %}
+</div>
 
 <h2>Future Selling</h2>
-{% for art in future %}
-  <div>
-    <p>{{ art.title }}</p>
-    <a href="{% url 'artdetails' art.id %}">More Info</a>
+<div class="row">
+  
+  {% for art in future %}
+  <small style='display:none;' id='theArtId'>{{ art.id }}</small>
+  
+  <div class='col-md-4 mt-2 mb-2 p-2'>
+    <div class="artinddet p-2 bg-warning m-2">
+      <div class="d-flex justify-content-left">
+        <small id="timewriting{{ art.id }}"></small> <small id="timestatus{{ art.id }}"></small>
+      </div>
+
+      <img src="{{ art.auctionimage.url }}" alt="" class="img-fluid">
+      <h4>{{ art.title|capfirst }}</h4>
+
+
+      <div class="d-flex justify-content-between align-content-center">
+        <p>Orientation: {{ art.typeCategory }}</p>
+        <p>Status: <span class="statusind">{{ art.status|capfirst }}</span></p>
+      </div>
+
+
+      <small>Owner: {{ art.owner.profile.nickname }}</small><br>
+      <a href="{% url 'artdetails' art.id %}">More Info</a>
+    </div>
   </div>
-{% empty %}
-<p class="alert alert-info">No <strong>Future</strong> Art Available in Database</p>
-{% endfor %}
+  {% empty %}
+  <p class="alert alert-info">No <strong>Future</strong> Art Available in Database</p>
+  {% endfor %}
+</div>
 
 <h2>Sold</h2>
-{% for art in sold %}
-  <div>
-    <p>{{ art.title }}</p>
-    <a href="{% url 'artdetails' art.id %}">More Info</a>
+<div class="row">
+  {% for art in sold %}
+  <div class='col-md-4 mt-2 mb-2 p-2'>
+    <div class="artinddet p-2 bg-warning m-2">
+      <small id="timewriting"></small><small id="timestatus"></small><br>
+      <img src="{{ art.auctionimage.url }}" alt="" class="img-fluid">
+      <h4>{{ art.title|capfirst }}</h4>
+      
+      <div class="d-flex justify-content-between align-content-center">
+        <p>Orientation: {{ art.typeCategory }}</p>
+        <p>Status: <span class="statusind">{{ art.status|capfirst }}</span></p>
+      </div>
+      <small>Owner: {{ art.owner.profile.nickname }}</small><br>
+      <a href="{% url 'artdetails' art.id %}">More Info</a>
+    </div>
   </div>
-
-{% empty %}
-<p class="alert alert-info">No <strong>Sold</strong> Art Available in Database</p>
-{% endfor %}
+  {% empty %}
+  <p class="alert alert-info">No <strong>Sold</strong> Art Available in Database</p>
+  {% endfor %}
+</div>
 
 {% endblock %}

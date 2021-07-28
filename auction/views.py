@@ -5,6 +5,10 @@ from .models import BuyerCheck, Interested, user_type, User, Art, Payment, Profi
 from .forms import RegistrationForm, ArtAddForm, UserForm, ProfileForm
 from django.contrib import messages
 from django.http import JsonResponse
+from datetime import datetime
+import pytz
+timebamako = pytz.timezone('Africa/Bamako')
+datetime_bamako = datetime.now(timebamako)
 
 
 def signup(request):
@@ -58,6 +62,18 @@ def index(request): # landing page normal
   inprogress = Art.get_all_by_status('inprogress')
   future = Art.get_all_by_status('futureselling')
   sold = Art.get_all_by_status('sold')
+
+  for i in future:
+    starting = i.startTime.timestamp()
+    nowtime = datetime_bamako.timestamp()
+
+    startingin = starting - nowtime
+    if startingin < 0:
+      Art.objects.filter(id=i.id).update(status='inprogress')
+
+    else:
+      print('bado')
+  
 
   params = {
     'inprogress':inprogress,
@@ -261,32 +277,40 @@ def interested(request):
   return JsonResponse(data)
 
 def auctionWin(request):
-  is_sold = False
-  is_bought = False
   artid = request.POST.get('artid')
   wonprice = request.POST.get('wonprice')
 
-  thisArt = Art.objects.get(id=artid)
-  winner = Interested.objects.get(art=thisArt, bidprice = wonprice)
-  
-  if winner.buyercheck == 'bought':
-    print('Already Bought')
-    is_bought = True
-  else:
-    Interested.objects.filter(art=thisArt, bidprice = wonprice).update(buyercheck='bought')
-    print('Updated to Bought')
-    is_bought = True
+  try:
+    is_sold = False
+    is_bought = False
 
-  if thisArt.status == 'sold':
-    is_sold = True
-    print('Already Sold')
-  else:
-    Art.objects.filter(id=artid).update(status='sold')
-    print('Updated to Sold')
-    is_sold = True
+    thisArt = Art.objects.get(id=artid)
+    winner = Interested.objects.get(art=thisArt, bidprice = wonprice)
+    
+    if winner.buyercheck == 'bought':
+      print('Already Bought')
+      is_bought = True
+    else:
+      Interested.objects.filter(art=thisArt, bidprice = wonprice).update(buyercheck='bought')
+      print('Updated to Bought')
+      is_bought = True
 
-  data = {
-    'is_sold':is_sold,
-    'is_bought':is_bought
-  }
-  return JsonResponse(data)
+    if thisArt.status == 'sold':
+      is_sold = True
+      print('Already Sold')
+    else:
+      Art.objects.filter(id=artid).update(status='sold')
+      print('Updated to Sold')
+      is_sold = True
+
+    data = {
+      'is_sold':is_sold,
+      'is_bought':is_bought
+    }
+    return JsonResponse(data)
+  except Interested.DoesNotExist:
+    Art.objects.filter(id=artid).update(status='nobidders')
+    data = {
+      'nobiddiers':'Sorry No Bidders for this Art'
+    }
+    return JsonResponse(data)

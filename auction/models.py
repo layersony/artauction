@@ -16,7 +16,8 @@ Paymenttype = (
 Status = (
   ('inprogress','In-Progress'),
   ('futureselling','Future Selling'),
-  ('sold', 'Sold')
+  ('sold', 'Sold'),
+  ('nobidders', 'nobidders')
 )
 BuyerCheck = (
   ('bought','bought'),
