@@ -17,7 +17,8 @@ urlpatterns = [
   path('bidding/<str:id>', views.biddingArea, name='bidding'),
   path('ajax/biddingprice/', views.ajaxbidprice, name='ajaxbidprice'),
   path('ajax/interested/', views.interested, name='interested'),
-  path('ajax/auctionWin/', views.auctionWin, name='auctionWin')
+  path('ajax/auctionWin/', views.auctionWin, name='auctionWin'),
+  path('buyer/checkout/<str:id>', views.checkout, name='checkout')
 ]
 if settings.DEBUG:
   urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

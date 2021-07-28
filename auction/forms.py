@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import User, user_type, Art, Profile
+from django.db.models.base import Model
+from .models import Payment, User, user_type, Art, Profile
 
 class RegistrationForm(UserCreationForm):
   typeuser = (
@@ -30,3 +31,7 @@ class ProfileForm(forms.ModelForm):
       fields = '__all__'
       exclude = ['username',]
       
+class Paymentform(forms.ModelForm):
+  class Meta:
+    model = Payment
+    fields = '__all__'

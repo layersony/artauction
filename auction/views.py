@@ -2,11 +2,12 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .models import BuyerCheck, Interested, user_type, User, Art, Payment, Profile
-from .forms import RegistrationForm, ArtAddForm, UserForm, ProfileForm
+from .forms import RegistrationForm, ArtAddForm, UserForm, ProfileForm, Paymentform
 from django.contrib import messages
 from django.http import JsonResponse
 from datetime import datetime
 import pytz
+
 timebamako = pytz.timezone('Africa/Bamako')
 datetime_bamako = datetime.now(timebamako)
 
@@ -314,3 +315,16 @@ def auctionWin(request):
       'nobiddiers':'Sorry No Bidders for this Art'
     }
     return JsonResponse(data)
+
+def checkout(request, id):
+  art = Art.objects.get(pk=id)
+  curr_pro = Profile.objects.get(username=request.user)
+  won = Interested.objects.get(art=art, buyer=curr_pro)
+  payment = Paymentform()
+
+  params = {
+    'art':art,
+    'payment':payment,
+    'won':won
+  }
+  return render(request, 'buyer/checkout.html', params)

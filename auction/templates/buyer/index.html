@@ -44,6 +44,25 @@
     <div class="col-md-8">
       <h2>In Progress</h2>
       {% for art in inprogress %}
+      <div class='col-md-4 mt-2 mb-2 p-2'>
+        <div class="artinddet bg-warning">
+          <img src="{{ art.auctionimage.url }}" alt="" class="img-fluid">
+          <div class="pr-2 pl-2 pb-2">
+            <small id="timewriting"></small><small id="timestatus"></small><br>
+            <h4>{{ art.title|capfirst }}</h4>
+            
+            <div class="d-flex justify-content-between align-content-center">
+              <p>Orientation: {{ art.typeCategory }}</p>
+              <p>Status: <span class="statusind">{{ art.status|capfirst }}</span></p>
+            </div>
+            <small>Owner: {{ art.owner.profile.nickname }}</small><br>
+            <div class="d-flex justify-content-between align-content-center">
+              <a href="{% url 'artdetails' art.id %}">More Info</a><br>
+              <a href="{% url 'bidding' art.id %}"><button class="btn btn-primary btn-sm">Start Bidding</button></a>
+            </div>
+          </div>
+        </div>
+      </div>
         <p>{{ art.title }}</p>
         <a href="{% url 'bidding' art.id %}"><button class="btn btn-primary">Start Bidding</button></a>
       {% empty %}
@@ -51,18 +70,58 @@
       {% endfor %}
 
       <h2>Interested Art</h2>
+      <div class="row">
       {% for art in likedimages %}
-      <p>{{ art.art.title }}</p>
+      <div class='col-md-4 mt-2 mb-2 p-2'>
+        <div class="artinddet bg-warning">
+          <img src="{{ art.art.auctionimage.url }}" alt="" class="img-fluid">
+          <div class="pr-2 pl-2 pb-2">
+            <small id="timewriting"></small><small id="timestatus"></small><br>
+            <h4>{{ art.art.title|capfirst }}</h4>
+            
+            <div class="d-flex justify-content-between align-content-center">
+              <p>Orientation: {{ art.art.typeCategory }}</p>
+              <p>Status: <span class="statusind">{{ art.art.status|capfirst }}</span></p>
+            </div>
+            <small>Owner: {{ art.art.owner.profile.nickname }}</small><br>
+            <div class="d-flex justify-content-between align-content-center">
+              <a href="{% url 'artdetails' art.id %}">More Info</a><br>
+            </div>
+          </div>
+        </div>
+      </div>
       {% empty %}
       <p class="alert alert-info">No <strong>Interested</strong> Art Available in Database</p>
       {% endfor %}
+    </div>
 
       <h2>Bought</h2>
+      <div class="row">
       {% for art in bought %}
-      <p>{{ art.art.title }}</p>
+      <div class='col-md-4 mt-2 mb-2 p-2'>
+        <div class="artinddet bg-warning">
+          <img src="{{ art.art.auctionimage.url }}" alt="" class="img-fluid">
+          <div class="pr-2 pl-2 pb-2">
+            <small id="timewriting"></small><small id="timestatus"></small><br>
+            <h4>{{ art.art.title|capfirst }}</h4>
+            
+            <div class="d-flex justify-content-between align-content-center">
+              <p>Orientation: {{ art.art.typeCategory }}</p>
+              <p>Status: <span class="statusind">{{ art.art.status|capfirst }}</span></p>
+            </div>
+            <small>Owner: {{ art.art.owner.profile.nickname }}</small><br>
+            <div class="d-flex justify-content-between align-content-center">
+              <a href="{% url 'artdetails' art.id %}">More Info</a><br>
+              <a href="{% url 'checkout' art.art.id %}"><button class="btn btn-primary btn-sm">Pay</button></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {% empty %}
       <p class="alert alert-info">No <strong>Bought</strong> Art Available in Database</p>
       {% endfor %}
+    </div>
     </div>
   </div>
 </div>

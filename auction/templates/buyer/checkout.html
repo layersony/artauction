@@ -1,7 +1,30 @@
 {% extends 'base.html' %}
+{% load bootstrap4 %}
 
 {% block content %}
 
-<h1>Art Checkout</h1>
+<h1 class="text-center">Art Checkout</h1>
+<div class="container mt-5 mb-5">
+  <div class="d-flex flex-column">
+    <div class="col-md-6">
+      <img src='{{ won.art.auctionimage.url }}' alt="" class="img-fluid">
+    </div>
+    <div class="col-md-6">
+      <p>{{ won.art.title }}</p>
+      <p>{{ won.art.price }}</p>
+      <p>{{ won.art.description }}</p>
+      <p>{{ won.buyer.nickname }}</p>
+      <p>{{ won.art.payment }}</p>
+
+      <form action="{%  %}" method="post">
+        {% csrf_token %}
+        {% bootstrap_form payment %}
+        <button type="submit" class="btn btn-outline-secondary">Pay</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+
 
 {% endblock %}
