@@ -58,8 +58,8 @@
       {% endfor %}
 
       <h2>Bought</h2>
-      {% for art in sold %}
-      <p>{{ art.title }}</p>
+      {% for art in bought %}
+      <p>{{ art.art.title }}</p>
       {% empty %}
       <p class="alert alert-info">No <strong>Bought</strong> Art Available in Database</p>
       {% endfor %}

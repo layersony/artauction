@@ -69,6 +69,14 @@ def index(request): # landing page normal
 def artdetails(request, id):
   art = Art.objects.get(id=id)
   curr_pro = Profile.objects.get(username=request.user)
+  winner = None
+
+  try:
+    if Interested.objects.get(art=art, buyercheck='bought'):
+      winner = Interested.objects.get(art=art, buyercheck='bought') 
+  except Interested.DoesNotExist:
+    winner = None
+
   likedArt = False
 
   if Interested.objects.filter(art=art, buyer=curr_pro):
@@ -77,6 +85,7 @@ def artdetails(request, id):
   params = {
     'art':art,
     'likedArt':likedArt,
+    'winner':winner
   }
   return render(request, 'artdetails.html', params)
 
@@ -215,13 +224,15 @@ def buyerProfile(request):
     profileform = ProfileForm(instance=request.user.profile)
     inprogress = Art.get_all_by_status('inprogress')
     likedimages = Interested.objects.filter(buyer=curr_profile)
+    bought = Interested.objects.filter(buyer=curr_profile, buyercheck='bought')
 
     params = {
       'curr_profile':curr_profile,
       'userform': userform,
       'profileform': profileform,
       'inprogress':inprogress,
-      'likedimages':likedimages
+      'likedimages':likedimages,
+      'bought':bought
     }
     return render(request, 'buyer/index.html', params)
 
@@ -246,5 +257,36 @@ def interested(request):
   data = {
     'success': 'Added to your Interest Collection',
     'addedsuccessful':addedsuccessful
+  }
+  return JsonResponse(data)
+
+def auctionWin(request):
+  is_sold = False
+  is_bought = False
+  artid = request.POST.get('artid')
+  wonprice = request.POST.get('wonprice')
+
+  thisArt = Art.objects.get(id=artid)
+  winner = Interested.objects.get(art=thisArt, bidprice = wonprice)
+  
+  if winner.buyercheck == 'bought':
+    print('Already Bought')
+    is_bought = True
+  else:
+    Interested.objects.filter(art=thisArt, bidprice = wonprice).update(buyercheck='bought')
+    print('Updated to Bought')
+    is_bought = True
+
+  if thisArt.status == 'sold':
+    is_sold = True
+    print('Already Sold')
+  else:
+    Art.objects.filter(id=artid).update(status='sold')
+    print('Updated to Sold')
+    is_sold = True
+
+  data = {
+    'is_sold':is_sold,
+    'is_bought':is_bought
   }
   return JsonResponse(data)

@@ -96,7 +96,7 @@ class Art(models.Model):
   status = models.CharField('Status', choices=Status, default='futureselling', null=True, max_length=50)
 
   def __str__(self):
-    return self.title
+    return f'{self.title} - Status - {self.status}'
 
   @classmethod
   def get_by_status(cls, reqUser, statusCode):

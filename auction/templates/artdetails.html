@@ -12,6 +12,9 @@
     </div>
     <div class="col-md-6 mb-4 mt-4">
       <div class="artindexdetails  p-4">
+        {% if art.status == 'sold' %}
+        <h2 class='text-success'>Sold to {{ winner.buyer.nickname }}</h2>
+        {% endif %}
         <h3>Art Details {{art.title}}</h3>
         <p>Description: {{ art.description }}</p>
         <p>Reserved Price: {{ art.reservedPrice }}</p>
@@ -22,8 +25,9 @@
         <p>Status: {{ art.status|capfirst }}</p>
         <p>Seller: {{ art.owner.profile.nickname }}</p>
 
+        {% if art.status == 'sold' %}
+        {% else %}
         <div class="d-flex justify-content-between align-items-center">
-
           <form method="post" id='interestedForm'>
             {% csrf_token %}
             <input type="hidden" name="interested" value='interested'>
@@ -34,9 +38,8 @@
             <button type='submit' id='liked' class="btn btn-outline-secondary btn-sm">Add to Interest</button>
             {% endif %}
           </form>
-
         </div>
-
+        {% endif %}
       </div>
     </div>
   </div>

@@ -15,8 +15,9 @@
         <div class="d-flex justify-content-between align-items-center">
           <p>Bidding Price: <span class="bddprice">{{ art.reservedPrice }}</span> Ksh</p>
           <p>Buying Price: {{ art.buyingPrice }} Ksh</p>
-          <p>Time Remaining: 40mins</p>
+          <p></p>
         </div>
+        <small id="timewriting"></small><small id="timestatus"></small>
         <p>Seller: {{ art.owner.profile.nickname }}</p>
       </div>
 
@@ -74,7 +75,6 @@
         'success': function(data){
           $('.bddprice').text(data['price'])
           buildlist(data['allparticipants'])
-          console.log($('#startingtime').text())
         }
       })
       function buildlist(data){
@@ -88,17 +88,68 @@
               </div>
             </li>`
           theul.prepend(entry)
+          
         }
       }
     }
   })
 
   $(document).ready(function(){
-    starttime = document.getElementById('startingtime')
-    endtime = document.getElementById('endingtime')
+    starttime = moment(document.getElementById('startingtime').textContent, 'MMMM DD YYYY H:mmA').toString()
+    endtime = moment(document.getElementById('endingtime').textContent, 'MMMM DD YYYY H:mmA').toString()
+    // console.log(starttime)
+    // console.log(endtime)
+    timestatus = $('#timestatus')
+    timewriting = $('#timewriting')
 
-    console.log(starttime.textContent)
-    console.log(moment(starttime.textContent).format('MM/DD/YYYY'));
+    const starting = Date.parse(starttime)
+    const ending = Date.parse(endtime)
+
+    const mycountdown = setInterval(()=>{
+      const now = new Date().getTime()
+      // console.log(now)
+      // console.log(ending)
+      
+      const diff = starting - now 
+      const toend = ending - now
+
+      const d = Math.floor(starting/ (1000 * 60 * 60 * 24) - (now/ (1000 * 60 * 60 *24)))
+      const h = Math.floor((starting/ (1000 * 60 * 60) - (now/ (1000 * 60 * 60))) % 24)
+      const m = Math.floor((starting/ (1000 * 60) - (now/ (1000 * 60))) % 60)
+      const s = Math.floor((starting/ (1000) - (now/ (1000))) % 60)
+
+      const dtoend = Math.floor(ending/ (1000 * 60 * 60 * 24) - (now/ (1000 * 60 * 60 *24)))
+      const htoend = Math.floor((ending/ (1000 * 60 * 60) - (now/ (1000 * 60 * 60))) % 24)
+      const mtoend = Math.floor((ending/ (1000 * 60) - (now/ (1000 * 60))) % 60)
+      const stoend = Math.floor((ending/ (1000) - (now/ (1000))) % 60)
+
+      if(diff>0){
+        let todis = d + ' days ' + h + ' hours ' + m + ' mins ' + s + ' secs'
+        timewriting.text('Starts In: ')
+        timestatus.text(todis)
+      }else if (toend>0){
+        let toendwhen = dtoend + ' days ' + htoend + ' hours ' + mtoend + ' mins ' + stoend + ' secs'
+        timewriting.text('Ends In: ')
+        timestatus.text(toendwhen)
+      }else{
+        clearInterval(mycountdown)
+        timewriting.text('Ended: ')
+        timestatus.text('--')
+        $.ajax({
+          'url':'/ajax/auctionWin/',
+          'type':'POST',
+          'data': {
+            'artid':'{{ art.id}}',
+            'csrfmiddlewaretoken':'{{ csrf_token }}',
+            'wonprice': '{{ art.reservedPrice }}'
+          },
+          'dataType':'json',
+          'success': function(data){
+            console.log(data)
+          }
+        })
+      }
+    }, 1000)
   });
   
 </script>

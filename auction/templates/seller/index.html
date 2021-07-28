@@ -115,22 +115,7 @@
       <h2>Sold</h2>
       {% for art in sold %}
       <p>{{ art.title }}</p>
-      <a href="{% url 'updateArt' art.id %}"><button class="btn btn-success">Update</button></a>
       <button class="btn btn-danger" data-toggle="modal" data-target="#myModaldelete{{art.id}}">Delete</button>
-
-      <div class="modal fade" id="myModaldelete{{art.id}}" role="dialog">
-        <div class="modal-dialog">
-          <div class="modal-content p-4">
-            <p>Are you Sure you want to Delete {{art.title}}?</p>
-            <form method="post" enctype="multipart/form-data" action="{% url 'deleteArt' art.id %}">
-              {% csrf_token %}
-              <div class="text-center">
-                <button type="submit" class="btn btn-danger">Delete</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
       {% empty %}
       <p class="alert alert-info">No <strong>Sold</strong> Art Available in Database</p>
       {% endfor %}
