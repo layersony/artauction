@@ -1,0 +1,44 @@
+body{
+  background:rgba(0, 0, 0, 0.309) url('../images/loginbg2.jpg');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-blend-mode: darken;
+}
+.btn:hover{
+  transition: ease-in-out 0.5s;
+}
+.loginsize{
+  max-width: 350px;
+  background-color: rgb(230, 230, 230);
+  color: black;
+  border-radius: 5px;
+  box-shadow: 0px 4px black;
+}
+
+.loginbtn{
+  color: black;
+  border: 1px solid black;
+  border-top: none;
+  transition: ease-in-out 0.5s;
+}
+.loginbtn:hover{
+  background-color: black;
+  color: white;
+  border: 1px solid black;
+}
+.loginpagede{
+  min-height: 100vh;
+}
+.leftcollogin{
+  min-height: 100vh;
+  background-color: transparent;
+}
+.rightcollogin{
+  background-color: white;
+  min-height: 100vh;
+}
+.rightcollogindown{
+  min-height: 80vh;
+}

@@ -58,7 +58,6 @@ def logout_user(request):
   logout(request)
   return redirect('loginpage')
 
-@login_required(login_url='loginpage')
 def index(request): # landing page normal
   inprogress = Art.get_all_by_status('inprogress')
   future = Art.get_all_by_status('futureselling')
@@ -82,7 +81,8 @@ def index(request): # landing page normal
     'sold':sold
   }
   return render(request, 'index.html', params)
-
+  
+@login_required(login_url='loginpage')
 def artdetails(request, id):
   art = Art.objects.get(id=id)
   curr_pro = Profile.objects.get(username=request.user)
@@ -140,6 +140,7 @@ def sellerProfile(request):
     }
     return render(request, 'seller/index.html', params)
 
+@login_required(login_url='loginpage')
 def addart(request):
   if request.method == 'POST':
     artaddform = ArtAddForm(request.POST, request.FILES)
@@ -168,6 +169,7 @@ def updateArt(request, id):
   }
   return render(request, 'seller/artupdate.html', params)
 
+@login_required(login_url='loginpage')
 def deleteArt(request, id):
   art = Art.objects.get(id=id)
   if request.method == 'POST':
@@ -176,6 +178,7 @@ def deleteArt(request, id):
 
   return render(request, 'seller/delete')
 
+@login_required(login_url='loginpage')
 def biddingArea(request, id):
   art = Art.objects.get(id=id)
   inputlen = len(str(art.reservedPrice))
@@ -221,6 +224,7 @@ def ajaxbidprice(request):
   }
   return JsonResponse(data)
 
+@login_required(login_url='loginpage')
 def buyerProfile(request):
   type_obj = user_type.objects.get(user=request.user)
   if request.user.is_authenticated and type_obj.is_seller:
@@ -316,6 +320,7 @@ def auctionWin(request):
     }
     return JsonResponse(data)
 
+@login_required(login_url='loginpage')
 def checkout(request, id):
   art = Art.objects.get(pk=id)
   curr_pro = Profile.objects.get(username=request.user)

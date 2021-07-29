@@ -2,25 +2,44 @@
 {% load bootstrap4 %}
 
 {% block content %}
-<sub>Current User {{ request.user }}</sub>
-<h1>Home</h1>
 
-<h2>In Progress</h2>
-<div class="row">
+<div class="landing d-flex flex-column justify-content-center align-items-center">
+    <div class="row landingrow ">
+      <div class="col-md-6 text-white text-left">
+        <h1 class="landingart"><span class="landingtitle">A</span>RT <span class="landingtitle">A</span>UCTION</h1>
+        <p>Art Grow more Expense As It Ages</p>
+      </div>
+      <div class="col-md-6">
+      </div>
+    </div>
+</div>
+
+<div class="container-fluid mb-5 mt-5">
+
+<div class="container">
+  <div class="row mt-3 mb-3">
+    <div class="col-sm-1 col-md-2 text-md-center"><h3>In Progress</h3></div>
+    <div class="col-sm-11 col-md-10"><hr class="hrline"></div>
+  </div>
+</div>
+
+<div class="horiwrapper d-flex">
   {% for art in inprogress %}
-  <div class='col-md-4 mt-2 mb-2 p-2'>
-    <div class="artinddet p-2 bg-warning m-2">
-      <img src="{{ art.auctionimage.url }}" alt="" class="img-fluid">
-      <small id="timewriting"></small><small id="timestatus"></small><br>
+  <div class='item m-2'>
+    <a class="infomore " href="{% url 'artdetails' art.id %}"><img src="{{ art.auctionimage.url }}" alt="" class="img-fluid artimage"></a>
+    <small id="timewriting"></small><small id="timestatus"></small><br>
+    <div class="artinddet p-2">
       <h4>{{ art.title|capfirst }}</h4>
       
       <div class="d-flex justify-content-between align-content-center">
         <p>Orientation: {{ art.typeCategory }}</p>
         <p>Status: <span class="statusind">{{ art.status|capfirst }}</span></p>
       </div>
-      <small>Owner: {{ art.owner.profile.nickname }}</small><br>
-      <a href="{% url 'artdetails' art.id %}">More Info</a><br>
-      <a href="{% url 'bidding' art.id %}"><button class="btn btn-primary btn-sm">Start Bidding</button></a>
+      <small>Owner: <strong>{{ art.owner.profile.nickname }}</strong></small><br>
+      <div class="d-flex justify-content-between align-content-right p-2 mb-2">
+        <a class="infomore " href="{% url 'artdetails' art.id %}"><i class="fad fa-info-circle"></i> View Info</a>
+        <a href="{% url 'bidding' art.id %}"><button class="btn allbtn btn-sm">Start Bidding</button></a>  
+      </div>
     </div>
   </div>
   {% empty %}
@@ -28,30 +47,25 @@
   {% endfor %}
 </div>
 
-<h2>Future Selling</h2>
-<div class="row">
-  
+<div class="container">
+  <div class="row mt-3 mb-3">
+    <div class="col-sm-1 col-md-3 text-center"><h3>Future Selling</h3></div>
+    <div class="col-sm-11 col-md-9"><hr class="hrline"></div>
+  </div>
+</div>
+
+<div class="horiwrapper d-flex"> 
   {% for art in future %}
-  <small style='display:none;' id='theArtId'>{{ art.id }}</small>
-  
-  <div class='col-md-4 mt-2 mb-2 p-2'>
-    <div class="artinddet p-2 bg-warning m-2">
-      <div class="d-flex justify-content-left">
-        <small id="timewriting{{ art.id }}"></small> <small id="timestatus{{ art.id }}"></small>
-      </div>
-
-      <img src="{{ art.auctionimage.url }}" alt="" class="img-fluid">
+  <div class='item m-2'>
+    <a href="{% url 'artdetails' art.id %}"><img src="{{ art.auctionimage.url }}" alt="" class="img-fluid artimage"></a>
+    <div class="artinddet p-2">
       <h4>{{ art.title|capfirst }}</h4>
-
-
       <div class="d-flex justify-content-between align-content-center">
         <p>Orientation: {{ art.typeCategory }}</p>
         <p>Status: <span class="statusind">{{ art.status|capfirst }}</span></p>
       </div>
-
-
-      <small>Owner: {{ art.owner.profile.nickname }}</small><br>
-      <a href="{% url 'artdetails' art.id %}">More Info</a>
+      <small>Owner: <strong>{{ art.owner.profile.nickname }}</strong> </small><br>
+      <a class="infomore " href="{% url 'artdetails' art.id %}"><i class="fad fa-info-circle"></i> View Info</a>
     </div>
   </div>
   {% empty %}
@@ -59,26 +73,31 @@
   {% endfor %}
 </div>
 
-<h2>Sold</h2>
-<div class="row">
+<div class="container">
+  <div class="row mt-3 mb-3">
+    <div class="col-sm-1 col-md-1 text-md-right"><h3>Sold</h3></div>
+    <div class="col-sm-11 col-md-11"><hr class="hrline"></div>
+  </div>
+</div>
+
+<div class="horiwrapper d-flex"> 
   {% for art in sold %}
-  <div class='col-md-4 mt-2 mb-2 p-2'>
-    <div class="artinddet p-2 bg-warning m-2">
-      <small id="timewriting"></small><small id="timestatus"></small><br>
-      <img src="{{ art.auctionimage.url }}" alt="" class="img-fluid">
+  <div class='item m-2'>
+    <a href="{% url 'artdetails' art.id %}"><img src="{{ art.auctionimage.url }}" alt="" class="img-fluid artimage"></a>
+    <div class="artinddet p-2">
       <h4>{{ art.title|capfirst }}</h4>
-      
       <div class="d-flex justify-content-between align-content-center">
         <p>Orientation: {{ art.typeCategory }}</p>
         <p>Status: <span class="statusind">{{ art.status|capfirst }}</span></p>
       </div>
-      <small>Owner: {{ art.owner.profile.nickname }}</small><br>
-      <a href="{% url 'artdetails' art.id %}">More Info</a>
+      <small>Owner: <strong>{{ art.owner.profile.nickname }}</strong></small><br>
+      <a class="infomore " href="{% url 'artdetails' art.id %}"><i class="fad fa-info-circle"></i> View Info</a>
     </div>
   </div>
   {% empty %}
   <p class="alert alert-info">No <strong>Sold</strong> Art Available in Database</p>
   {% endfor %}
+</div>
 </div>
 
 {% endblock %}

@@ -43,6 +43,9 @@
 
     <div class="col-md-8">
       <h2>In Progress</h2>
+      <div class="row">
+
+     
       {% for art in inprogress %}
       <div class='col-md-4 mt-2 mb-2 p-2'>
         <div class="artinddet bg-warning">
@@ -63,12 +66,10 @@
           </div>
         </div>
       </div>
-        <p>{{ art.title }}</p>
-        <a href="{% url 'bidding' art.id %}"><button class="btn btn-primary">Start Bidding</button></a>
       {% empty %}
       <p class="alert alert-info">No <strong>In-Progress</strong> Art Available in Database</p>
       {% endfor %}
-
+    </div>
       <h2>Interested Art</h2>
       <div class="row">
       {% for art in likedimages %}

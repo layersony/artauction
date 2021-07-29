@@ -14,7 +14,7 @@
           <br>
           {% bootstrap_form profileform %}
           <div class="text-center">
-            <button type="submit" class="btn btn-primary">Save changes</button>
+            <button type="submit" class="btn allbtn">Save changes</button>
           </div>
         </form>
       </div>
@@ -30,7 +30,7 @@
           {{ artaddform.errors }}
           {% bootstrap_form artaddform %}
           <div class="text-center">
-            <button type="submit" class="btn btn-primary">Add Art Work</button>
+            <button type="submit" class="btn allbtn">Add Art Work</button>
           </div>
         </form>
       </div>
@@ -39,9 +39,9 @@
 
 </div>
 
-<div class="container">
+<div class="container mb-5">
   <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-4 mt-3">
       <div class="d-flex justify-content-center align-items-center mt-5 mb-5">
         <div class="userdetails ">
           <div class="text-center mb-2 mt-2">
@@ -52,10 +52,10 @@
             <p>Email: {{ curr_profile.username }}</p>
             <p>Phone: {{ curr_profile.phone }}</p>
             <p>Address: {{ curr_profile.address }}</p>
-            <button class="btn btn-outline-secondary btn-md plusicon" data-toggle="modal" data-target="#myModal"><span>Update Info</span></button>
+            <button class="btn allbtn btn-md plusicon" data-toggle="modal" data-target="#myModal"><span>Update Info</span></button>
             <hr>
             <div class="text-center">
-              <button class="btn btn-info btn-md plusicon" data-toggle="modal" data-target="#myModalart"><span>Add Art</span></button>
+              <button class="btn btn-info btn-md plusicon" data-toggle="modal" data-target="#myModalart"><i class="fad fa-plus turning"></i><span> Add Art</span></button>
             </div>
             <hr>
           </div>
@@ -63,36 +63,70 @@
       </div>
     </div>
 
-    <div class="col-md-8">
-      <h2>In Progress</h2>
-      {% for art in inprogress %}
-        <p>{{ art.title }}</p>
-        <a href="{% url 'updateArt' art.id %}"><button class="btn btn-success">Update</button></a>
-        <button class="btn btn-danger" data-toggle="modal" data-target="#myModaldelete{{art.id}}">Delete</button>
+    <div class="col-md-8 mt-3">
 
-        <div class="modal fade" id="myModaldelete{{art.id}}" role="dialog">
-          <div class="modal-dialog">
-            <div class="modal-content p-4">
-              <p>Are you Sure you want to Delete {{art.title}}?</p>
-              <form method="post" enctype="multipart/form-data" action="{% url 'deleteArt' art.id %}">
-                {% csrf_token %}
-                <div class="text-center">
-                  <button type="submit" class="btn btn-danger">Delete</button>
-                </div>
-              </form>
+      <h2 class="mt-3">In Progress</h2>
+      <div class="horiwrapper d-flex mb-2">
+        {% for art in inprogress %}
+        <div class='item mr-2 mb-2'>
+          <a class="infomore " href="{% url 'artdetails' art.id %}"><img src="{{ art.auctionimage.url }}" alt="" class="img-fluid artimage"></a>
+          <small id="timewriting"></small><small id="timestatus"></small><br>
+          <div class="artinddet p-2">
+            <h4>{{ art.title|capfirst }}</h4>
+            
+            <div class="d-flex justify-content-between align-content-center">
+              <p>Orientation: {{ art.typeCategory }}</p>
+              <p>Status: <span class="statusind">{{ art.status|capfirst }}</span></p>
+            </div>
+            <small>Owner: <strong>{{ art.owner.profile.nickname }}</strong></small><br>
+            <div class="d-flex justify-content-between align-content-right p-2 mb-2">
+              <a class="infomore " href="{% url 'artdetails' art.id %}"><i class="fad fa-info-circle"></i> View Info</a>
+              <a href="{% url 'updateArt' art.id %}"><button class="btn btn-outline-success btn-sm">Update</button></a>
+              <button class="btn text-danger" data-toggle="modal" data-target="#myModaldelete{{art.id}}"><i class="fad fa-trash"></i></button>
             </div>
           </div>
         </div>
 
-      {% empty %}
-      <p class="alert alert-info">No <strong>In-Progress</strong> Art Available in Database</p>
-      {% endfor %}
+          <div class="modal fade" id="myModaldelete{{art.id}}" role="dialog">
+            <div class="modal-dialog">
+              <div class="modal-content p-4">
+                <p>Are you Sure you want to Delete {{art.title}}?</p>
+                <form method="post" enctype="multipart/form-data" action="{% url 'deleteArt' art.id %}">
+                  {% csrf_token %}
+                  <div class="text-center">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
 
-      <h2>Future Selling</h2>
+        {% empty %}
+        <p class="alert alert-info">No <strong>In-Progress</strong> Art Available in Database</p>
+        {% endfor %}
+      </div>
+
+      <h2 class="mt-3">Future Selling</h2>
+      <div class="horiwrapper d-flex mb-2">
       {% for art in future %}
-      <p>{{ art.title }}</p>
-      <a href="{% url 'updateArt' art.id %}"><button class="btn btn-success">Update</button></a>
-      <button class="btn btn-danger" data-toggle="modal" data-target="#myModaldelete{{art.id}}">Delete</button>
+      <div class='item mr-2 mb-2'>
+        <a class="infomore " href="{% url 'artdetails' art.id %}"><img src="{{ art.auctionimage.url }}" alt="" class="img-fluid artimage"></a>
+        <small id="timewriting"></small><small id="timestatus"></small><br>
+        <div class="artinddet p-2">
+          <h4>{{ art.title|capfirst }}</h4>
+          
+          <div class="d-flex justify-content-between align-content-center">
+            <p>Orientation: {{ art.typeCategory }}</p>
+            <p>Status: <span class="statusind">{{ art.status|capfirst }}</span></p>
+          </div>
+          <small>Owner: <strong>{{ art.owner.profile.nickname }}</strong></small><br>
+          <div class="d-flex justify-content-between align-content-right p-2 mb-2">
+            <a class="infomore " href="{% url 'artdetails' art.id %}"><i class="fad fa-info-circle"></i> View Info</a>
+            <a href="{% url 'updateArt' art.id %}"><button class="btn btn-outline-success btn-sm">Update</button></a>
+            <button class="btn text-danger" data-toggle="modal" data-target="#myModaldelete{{art.id}}"><i class="fad fa-trash"></i></button>
+          </div>
+        </div>
+      </div>
 
       <div class="modal fade" id="myModaldelete{{art.id}}" role="dialog">
         <div class="modal-dialog">
@@ -107,18 +141,49 @@
           </div>
         </div>
       </div>
-
       {% empty %}
       <p class="alert alert-info">No <strong>Future</strong> Art Available in Database</p>
       {% endfor %}
+    </div>
 
-      <h2>Sold</h2>
+
+      <h2 class="mt-3">Sold</h2>
+      <div class="horiwrapper d-flex mb-2">
       {% for art in sold %}
-      <p>{{ art.title }}</p>
-      <button class="btn btn-danger" data-toggle="modal" data-target="#myModaldelete{{art.id}}">Delete</button>
+      <div class='item mr-2 mb-2'>
+        <a class="infomore " href="{% url 'artdetails' art.id %}"><img src="{{ art.auctionimage.url }}" alt="" class="img-fluid artimage"></a>
+        <small id="timewriting"></small><small id="timestatus"></small><br>
+        <div class="artinddet p-2">
+          <h4>{{ art.title|capfirst }}</h4>
+          
+          <div class="d-flex justify-content-between align-content-center">
+            <p>Orientation: {{ art.typeCategory }}</p>
+            <p>Status: <span class="statusind">{{ art.status|capfirst }}</span></p>
+          </div>
+          <small>Owner: <strong>{{ art.owner.profile.nickname }}</strong></small><br>
+          <div class="d-flex justify-content-between align-content-right p-2 mb-2">
+            <a class="infomore " href="{% url 'artdetails' art.id %}"><i class="fad fa-info-circle"></i> View Info</a>
+            <button class="btn text-danger" data-toggle="modal" data-target="#myModaldelete{{art.id}}"><i class="fad fa-trash"></i></button>
+          </div>
+        </div>
+      </div>
+      <div class="modal fade" id="myModaldelete{{art.id}}" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content p-4">
+            <p>Are you Sure you want to Delete {{art.title}}?</p>
+            <form method="post" enctype="multipart/form-data" action="{% url 'deleteArt' art.id %}">
+              {% csrf_token %}
+              <div class="text-center">
+                <button type="submit" class="btn btn-danger">Delete</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
       {% empty %}
       <p class="alert alert-info">No <strong>Sold</strong> Art Available in Database</p>
       {% endfor %}
+    </div>
     </div>
   </div>
 </div>

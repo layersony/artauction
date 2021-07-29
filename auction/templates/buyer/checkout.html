@@ -16,7 +16,7 @@
       <p>{{ won.buyer.nickname }}</p>
       <p>{{ won.art.payment }}</p>
 
-      <form action="{%  %}" method="post">
+      <form action="" method="post">
         {% csrf_token %}
         {% bootstrap_form payment %}
         <button type="submit" class="btn btn-outline-secondary">Pay</button>
