@@ -129,8 +129,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 django_heroku.settings(locals())
 
-LOGIN_REDIRECT_URL ='/'
-LOGOUT_REDIRECT_URL ='/'
+LOGIN_REDIRECT_URL ='home'
+LOGOUT_REDIRECT_URL ='home'
 
 EMAIL_USE_TLS = config('EMAIL_USE_TLS')
 EMAIL_HOST = config('EMAIL_HOST')

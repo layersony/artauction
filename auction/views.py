@@ -128,6 +128,8 @@ def sellerProfile(request):
     inprogress = Art.get_by_status(request.user, 'inprogress')
     future = Art.get_by_status(request.user, 'futureselling')
     sold = Art.get_by_status(request.user, 'sold')
+    nobidders = Art.get_by_status(request.user, 'nobidders')
+
 
     params = {
       'curr_profile':curr_profile,
@@ -136,7 +138,8 @@ def sellerProfile(request):
       'profileform': profileform,
       'inprogress':inprogress,
       'future':future,
-      'sold':sold
+      'sold':sold,
+      'nobidders':nobidders
     }
     return render(request, 'seller/index.html', params)
 

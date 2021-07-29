@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Lobster&display=swap');
-*{
+@import url('https://fonts.googleapis.com/css2?family=Special+Elite&family=Zen+Tokyo+Zoo&display=swap');*{
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -33,8 +33,7 @@
 .navbar-brand{
   color: black;
   font-size: 55px;
-  font-family: 'Lobster', cursive;
-}
+  font-family: 'Special Elite', cursive;}
 .navbar-brand:hover{
   border-bottom: None;
   color: black;
@@ -42,7 +41,7 @@
 
 .navbar{
   border-bottom: 3px solid;
-  min-height: 17vh;
+  min-height: 10vh;
   color: black;
 }
 
@@ -63,22 +62,22 @@
 }
 
 .landing{
-  background-image: linear-gradient(to left, rgba(243, 243, 243, 0.145) 20%, rgba(17, 17, 56, 0.364) 30%, rgb(0, 0, 0) 70%), url("../images/landingbg2.jpg");
+  background-image: linear-gradient(to left, rgba(0, 0, 0, 0.248) 20%, rgba(17, 17, 56, 0.426) 30%, rgb(0, 0, 0) 70%), url("../images/landingbg2black.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: right center;
-  height: 75vh;
+  height: 85vh;
 }
 .landingrow{
   width: 1000px;
 }
 .landingart{
-  font-size: 70px;
+  font-size: 90px;
   font-weight: 300px;
 }
 .landingtitle{
-  font-family: 'Abril Fatface', cursive;
-  font-size: 90px
+  font-family: 'Zen Tokyo Zoo', cursive;
+  font-size: 160px
 }
 
 .horiwrapper {
@@ -101,7 +100,7 @@
   max-width: 450px;
   max-height: 400px;
   box-shadow: 1px 4px 5px black;
-
+  margin-left: 10px;
 }
 
 .artinddet{
@@ -144,14 +143,31 @@
 .userpic{
   width: 200px;
 }
-
+.hrline{
+  border: 3px solid black;
+  border-radius: 5px;
+}
 .updatetheart{
   border-radius: 10px 0px 0px 10px;
 }
 .artimage{
   max-width: 410px;
 }
-
+.bigimage{
+  box-shadow: 0px 3px 5px black;
+}
+.listofbid{
+  background-color: black;
+  color: white;
+  border-radius: 20px;
+  padding: 10px;
+}
+.bgcheckout{
+  background-color: rgba(0, 0, 0, 0.097);
+  border: 1px solid;
+  border-radius: 5px;
+  box-shadow: 5px 5px black;
+}
 @media screen and (max-width:500px){
   .wrapper .item {
     border-radius: 2px;
@@ -164,5 +180,14 @@
   .navbar-brand{
     color: black;
     font-size: 30px;
+  }
+
+  .landingart{
+    font-size: 40px;
+    font-weight: 300px;
+  }
+  .landingtitle{
+    font-family: 'Zen Tokyo Zoo', cursive;
+    font-size: 60px
   }
 }

@@ -3,23 +3,25 @@
 
 {% block content %}
 
-<h1 class="text-center">Art Checkout</h1>
+<h1 class="text-center mt-3">Art Checkout</h1>
 <div class="container mt-5 mb-5">
-  <div class="d-flex flex-column">
-    <div class="col-md-6">
-      <img src='{{ won.art.auctionimage.url }}' alt="" class="img-fluid">
+  <div class="d-flex ">
+    <div class="col-md-6 mb-4 mt-4">
+      <img src='{{ won.art.auctionimage.url }}' alt="" class="img-fluid bigimage">
     </div>
-    <div class="col-md-6">
-      <p>{{ won.art.title }}</p>
-      <p>{{ won.art.price }}</p>
-      <p>{{ won.art.description }}</p>
-      <p>{{ won.buyer.nickname }}</p>
-      <p>{{ won.art.payment }}</p>
+    <div class="col-md-6 bgcheckout p-3">
+      <h2>{{ won.art.title }}</h2>
+      <p>Price: <strong>{{ won.bidprice }}</strong> Ksh</p>
+      <p>Default Payment Mode: <strong>{{ won.buyer.payment }}</strong></p>
 
       <form action="" method="post">
         {% csrf_token %}
         {% bootstrap_form payment %}
-        <button type="submit" class="btn btn-outline-secondary">Pay</button>
+        <label for="pricetopay">Price</label>
+        <input type="text" name="pricetopay" class="form-control" value={{ won.bidprice}}>
+        <div class="text-center mt-3">
+          <button type="submit" class="btn allbtn">Pay</button>
+        </div>
       </form>
     </div>
   </div>

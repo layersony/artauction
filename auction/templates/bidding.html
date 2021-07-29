@@ -6,19 +6,19 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-6 mb-4 mt-4 d-flex bg-danger justify-content-center align-items-center">
-      <img src="{{ art.auctionimage.url }}" alt="{{ art.title }}" class="img-fluid">
+    <div class="col-md-6 mb-4 mt-4 d-flex justify-content-center align-items-center">
+      <img src="{{ art.auctionimage.url }}" alt="{{ art.title }}" class="img-fluid bigimage">
     </div>
     <div class="col-md-6 mb-4 mt-4">
       <div class="container">
-        <h3>Bidding on {{art.title}}</h3>
+        <h2>Bidding on {{art.title}}</h2>
         <div class="d-flex justify-content-between align-items-center">
           <p>Bidding Price: <span class="bddprice">{{ art.reservedPrice }}</span> Ksh</p>
           <p>Buying Price: {{ art.buyingPrice }} Ksh</p>
           <p></p>
         </div>
         <small id="timewriting"></small><small id="timestatus"></small>
-        <p>Seller: {{ art.owner.profile.nickname }}</p>
+        <p>Seller: <strong>{{ art.owner.profile.nickname }}</strong></p>
       </div>
 
       <div class="container">
@@ -26,7 +26,7 @@
           {% csrf_token %}
           <input type="number" name="biddingPrice" id="biddingPrice" minlength='{{ inputlen }}'>
           <input type="hidden" name="artid" value="{{art.id}}">
-          <button class="btn btn-primary btn-sm" type="submit">Bid</button><br>
+          <button class="btn allbtn btn-sm" type="submit">Bid</button><br>
           <small class='text-danger' id="warning"></small>
         </form>
         <small>Bid Price be higher than: <span class="text-danger bddprice">{{ art.reservedPrice }}</span> </small>
@@ -35,7 +35,7 @@
         <p>Category: {{ art.typeCategory }}</p>
         <p>Start Time: <span id="startingtime">{{ art.startTime }}</span></p>
         <p>End Time: <span id="endingtime">{{ art.EndTime }}</span></p>
-        <p>Status: {{ art.status|capfirst }}</p>
+        <p>Status: <span class="statusind">{{ art.status|capfirst }}</span></p>
       </div>
     </div>
   </div>
@@ -44,7 +44,7 @@
     <h3 class='text-center'>List of Bidders</h3>
     <ol id='bidlist'>
       {% for participant in allparticipants %}
-      <li class="bg-secondary p-2">
+      <li class="listofbid p-3 mt-2">
         <div class="d-flex justify-content-between align-items-center">
           <p>{{participant.buyer.nickname}}</p>
           <p>{{participant.bidprice}}</p>
@@ -80,14 +80,13 @@
         theul = $('#bidlist')
         for (let i = 0; i < data.length; i++){
           let entry = `
-            <li class="bg-secondary p-2">
+            <li class="listofbid p-3 mt-2">
               <div class="d-flex justify-content-between align-items-center">
                 <p>${data[i][0]}</p>
                 <p>${data[i][1]}</p>
               </div>
             </li>`
           theul.prepend(entry)
-          
         }
       }
     }
